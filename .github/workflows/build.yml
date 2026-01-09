@@ -6,15 +6,30 @@ on:
   push:
     branches:
       - main
+
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
     - uses: cachix/install-nix-action@v31
     - run: nix build
     - run: nix flake check
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: nixos-digital-ocean-image-${{ github.sha }}
         path: result/*.qcow2.gz
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+    steps:
+    - uses: actions/checkout@v5
+    - name: Download NixOS image build
+      uses: actions/download-artifact@v5
+      with:
+        name: nixos-digital-ocean-image-${{ github.sha }}
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          result/*.qcow2.gz
