@@ -28,8 +28,9 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: nixos-digital-ocean-image-${{ github.sha }}
+    - run: mv *.qcow2.gz do-nixos.qcow2.gz
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          result/*.qcow2.gz
+          do-nixos.qcow2.gz
