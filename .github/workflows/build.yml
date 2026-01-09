@@ -1,6 +1,10 @@
 name: "Build Image"
 on:
-  create:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
 
 jobs:
   build:
