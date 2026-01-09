@@ -1,0 +1,20 @@
+name: "Build Image"
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    - uses: cachix/install-nix-action@v31
+    - run: nix build
+    - run: nix flake check
+    - uses: actions/upload-artifact@v4
+      with:
+        name: nixos-digital-ocean-image-${{ github.sha }}
+        path: result/*.qcow2.gz
