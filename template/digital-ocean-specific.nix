@@ -1,10 +1,10 @@
 {
   lib,
-  nixpkgs,
+  modulesPath,
   ...
 }: {
   imports = [
-    "${nixpkgs}/nixos/modules/virtualisation/digital-ocean-config.nix"
+    "${modulesPath}/virtualisation/digital-ocean-config.nix"
   ];
 
   # disable system reconfiguration from digital ocean userdata on startup
