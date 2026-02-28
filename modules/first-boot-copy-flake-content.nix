@@ -17,10 +17,12 @@
     path = [
       pkgs.rsync
       pkgs.busybox
+      pkgs.cloud-init
     ];
     script = ''
       set -e
       rsync -av --chmod=0644 "${self}/" /etc/nixos/;
+      cloud-init status --wait;
       sed "s/nixos-digital-ocean/$(hostname)/" "${self}/flake.nix" >  /etc/nixos/flake.nix;
     '';
   };
